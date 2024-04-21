@@ -1,0 +1,110 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+
+
+namespace Assignment_FileHandling_with_Logger
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string filePath = @"G:\demo.txt";
+            Logger logger = Logger.GetLogger(filePath);
+           
+            Customer customer = new Customer();
+            Console.WriteLine("Enter ID:");
+            customer.Id = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter name:");
+            customer.CName = Console.ReadLine();
+            Console.WriteLine("Enter address:");
+            customer.CAddress = Console.ReadLine();
+
+            logger.Log("--- Logged in --- ");
+            logger.Log(customer.GetCustomerDetails());
+
+            Console.WriteLine("Done");
+        }
+    }
+
+    public class Customer
+    {
+        private int _CId;
+        private string _CName;
+        private string _CAddress;
+       //private string txt = "logging in text";
+
+       // public string txt_login()
+       // {
+       //     return txt;
+       // }
+
+        public string CAddress
+        {
+            get { return _CAddress; }
+            set { _CAddress = value; }
+        }
+
+        public string CName
+        {
+            get { return _CName; }
+            set { _CName = value; }
+        }
+
+        public int Id
+        {
+            get { return _CId; }
+            set { _CId = value; }
+        }
+
+        public string GetCustomerDetails()
+        {
+            string str = "CID: " + _CId + ", CName: " + _CName + ", CAddress: " + _CAddress;
+            return str;
+        }
+    }
+
+    public class Logger //Singleton
+    {
+        private static Logger logger;
+        private StreamWriter fileWriter;
+       
+        private Logger(string filePath)
+        {
+            Console.WriteLine("---Logger Object Created For First Time ---");
+            if (!File.Exists(filePath))
+            {
+                fileWriter = new StreamWriter(filePath);
+            }
+            else
+            {
+                fileWriter = File.AppendText(filePath);
+            }
+
+
+        }
+
+        public static Logger GetLogger(string filePath)
+        {
+            if (logger == null)
+            {
+                logger = new Logger(filePath);
+            }
+            return logger;
+        }
+
+        public void Log(string msg)
+        {
+            Console.WriteLine("--- {0} at time ::  {1}", msg, DateTime.Now.ToString());
+            fileWriter.WriteLine("--- Info-- {0}  at   ::{1}", msg, DateTime.Now.ToString());
+            fileWriter.AutoFlush=true;
+            
+           
+
+        }
+    }
+}
