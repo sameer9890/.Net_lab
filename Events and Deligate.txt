@@ -1,0 +1,97 @@
+using System;
+using System.Net.NetworkInformation;
+using System.Runtime.CompilerServices;
+
+
+namespace assignment_delegate
+{
+    public delegate void Delegate1();
+    internal class Program
+    {
+       
+        static void Main(string[] args)
+        {
+            
+           
+            Report r = new Report();
+            r.call();
+            Delegate1 del1 = new Delegate1(r.parse);
+            Delegate1 del2 = new Delegate1(r.onValidate);
+           Delegate1 del3 = new Delegate1(r.onRevalidate);
+           Delegate1 del4 = new Delegate1(r.onSave);
+
+
+            r.onParse += del1;
+             r.onValidate += del2;
+             r.onValidate += del3;
+             r.onValidate += del4;
+
+           
+
+
+        }
+    }
+      public class Report
+    {
+
+        public event Delegate1 onParse;
+          public event Delegate1 onValidate;
+          public event Delegate1 onRevalidate;
+          public event Delegate1 onSave;
+        int choice;
+        public void call()
+        {
+            Console.WriteLine("Want to Revalidate[1] or not[2] ");
+            int choice = Convert.ToInt32(Console.ReadLine());
+
+
+
+            if (choice == 1)
+            {
+                onParse();
+                onValidate();
+                onRevalidate();
+                onSave();
+
+            }
+            else
+            {
+                onParse();
+                 onValidate();
+                //  onRevalidate();
+                 onSave();
+            }
+        }
+
+
+    
+    
+
+
+
+
+
+
+    public void parse()
+        {
+            Console.WriteLine("pdf is parsed");
+        
+        }
+
+      public void validate()
+        {
+            Console.WriteLine("pdf is validated");
+        }
+
+        public void revalidate()
+        {
+            Console.WriteLine("pdf is revalidated");
+        }
+
+        public void save()
+        {
+            Console.WriteLine("pdf is saved");
+        }
+    
+    }
+}
