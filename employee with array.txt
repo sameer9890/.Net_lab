@@ -1,0 +1,116 @@
+using System.Runtime.InteropServices.Marshalling;
+using System.Threading.Channels;
+
+namespace Employee_assignment
+{
+    internal class Program
+    {
+
+        static void Main(string[] args)
+        {
+            Console.WriteLine("enter number of employee details you want :");
+            int len=Convert.ToInt32(Console.ReadLine());
+
+            Employee[] emp = new Employee[len];
+            
+            for (int i = 0; i < emp.Length; i++) 
+            {   Employee emps = new Employee();
+                Console.WriteLine("Enter Id For employee {0}",i+1);
+                emps.ID = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Enter Name For employee {0}",i+1);
+                emps.NAME = Console.ReadLine();
+                Console.WriteLine("Enter Address For employee {0}",i+1);
+                emps.ADD = Console.ReadLine();
+
+                emp[i] = emps;
+            }
+            Console.WriteLine("employee details are: ");
+
+            foreach ( Employee e in emp ) 
+            {
+                Console.WriteLine(e.ID);
+                Console.WriteLine(e.NAME);
+                Console.WriteLine(e.ADD);
+
+            }
+            int res;
+            do
+            {
+
+
+                update();
+                Console.WriteLine("do you want to update anymore ?...press 1");
+                res=Convert.ToInt32(Console.ReadLine());
+
+
+            } while (res == 1);
+
+            void update()
+            {
+                Console.WriteLine("Enter the Employee Id you want to modify:");
+                int eid = Convert.ToInt32(Console.ReadLine());
+
+                for (int i = 0; i < emp.Length; i++)
+                {
+                    if (emp[i].ID == eid)
+                    {
+                        Console.WriteLine("Enter new Id for employee {0}:", eid);
+                        emp[i].ID= Convert.ToInt32(Console.ReadLine());
+                        //emp[i].NAME = Console.ReadLine();
+                        Console.WriteLine("Enter new name for employee {0}:", eid);
+                        emp[i].NAME = Console.ReadLine();
+                        Console.WriteLine("Enter new address for employee {0}:", eid);
+                        emp[i].ADD = Console.ReadLine();
+
+                        Console.WriteLine("updated employee details are: ");
+                        Console.WriteLine(emp[i].ID);
+                        Console.WriteLine(emp[i].NAME);
+                        Console.WriteLine(emp[i].ADD);
+                        break; 
+
+
+                    }
+                }
+            }
+
+
+
+        }
+    }
+
+
+    public class Employee
+    {
+        private int _Id;
+        private string _Name;
+        private string _Add;
+
+
+
+        public int ID
+        {
+            get { return _Id; }
+            set { _Id = value; }
+        }
+
+
+        public string NAME
+        {
+            get { return _Name; }
+            set { _Name = value; }
+        }
+
+        public string ADD
+        {
+            get { return _Add; }
+            set { _Add = value; }
+        }
+
+        
+
+        }
+
+
+    }
+
+

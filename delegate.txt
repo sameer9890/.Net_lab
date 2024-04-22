@@ -1,0 +1,114 @@
+namespace delegate_assignment01
+{
+    
+        public delegate void Delegate1();
+
+        internal class Program
+        {
+            static void Main(string[] args)
+            {
+            //Console.WriteLine("Hello, World!");
+            //Console.WriteLine("");
+            int a;
+            do
+            {
+                pdf p = new pdf();
+
+                Console.WriteLine("Enter the choice to validate(1) or revalidate(2)");
+                int i = Convert.ToInt32(Console.ReadLine());
+
+                if (i == 1)
+                {
+                    p.InvokeValidate();
+                }
+                else if (i == 2)
+                {
+                    p.InvokeRevalidate();
+                }
+                else
+                {
+                    Console.WriteLine("wrong input");
+                }
+
+                Console.WriteLine("want to continue");
+
+                  a = Convert.ToInt32(Console.ReadLine());
+
+            } while (a==1);
+            }
+        }
+
+        public class pdf
+        {
+            public event Delegate1 On_call_op;
+            public event Delegate1 On_call_op2;
+
+            public void InvokeRevalidate()
+            {
+                Console.WriteLine("Inside Revalidate Option");
+
+
+                Delegate1 del3 = parse;
+                Delegate1 del4 = validate;
+                Delegate1 del5 = Revalidate;
+                Delegate1 del6 = save;
+
+                On_call_op += del3;
+                On_call_op += del4;
+                On_call_op += del5;
+                On_call_op += del6;
+
+
+                On_call_op.Invoke();
+
+
+                //On_call_op -= del5; // decoupling of revalidate
+            }
+
+            public void InvokeValidate()
+            {
+                Console.WriteLine("Inside Validate Option");
+
+
+                Delegate1 del3 = parse;
+                Delegate1 del4 = validate;
+                Delegate1 del5 = Revalidate;
+                Delegate1 del6 = save;
+
+
+                On_call_op2 += del3;
+                On_call_op2 += del4;
+                On_call_op2 += del5;
+                On_call_op2 += del6;
+                On_call_op2 -= del5;
+
+               On_call_op2.Invoke();
+
+
+
+            }
+
+
+            public void parse()
+            {
+                Console.WriteLine("inside parse");
+            }
+
+            public void validate()
+            {
+                Console.WriteLine("inside validate");
+            }
+
+            public void save()
+            {
+                Console.WriteLine("inside save");
+            }
+
+            public void Revalidate()
+            {
+                Console.WriteLine("inside Revalidate");
+            }
+        }
+    }
+
+
