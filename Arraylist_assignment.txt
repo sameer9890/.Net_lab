@@ -1,0 +1,111 @@
+using System.Collections;
+
+namespace ArrayList_Assignment
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+            int n, ans, result;
+            Console.WriteLine("Enter the no. of Employee Records u want to Enter");
+            n = Convert.ToInt32(Console.ReadLine());
+
+            Emp[] emp = new Emp[n];
+            ArrayList arr = new ArrayList();
+
+                for (int i = 0; i < n; i++)
+                {
+                    Console.WriteLine("Enter Employee Name:");
+                    string name = Console.ReadLine();
+                    Console.WriteLine("Enter Salary:");
+                    int salary = Convert.ToInt32(Console.ReadLine());
+
+                    Emp newEmp = new Emp();
+                    newEmp.EName = name;
+                    newEmp.Salary = salary;
+                    arr.Add(newEmp);
+
+                }
+
+            do
+            {
+                Console.WriteLine("Do u want to search record press '1' \n     Do u want to display record press '2' ");
+                ans = Convert.ToInt32(Console.ReadLine());
+
+
+
+                if (ans == 2)
+                {
+                    Console.WriteLine("\n Employee Records:");
+
+                    foreach (Emp e in arr)
+                    {
+                        Console.WriteLine($"Name: {e.EName}, Salary: {e.Salary}");
+                    }
+                }
+
+                else if (ans == 1)
+                {
+                    Console.WriteLine("\nEnter the name to search:");
+                    string searchName = Console.ReadLine();
+                    bool found = false;
+
+                    foreach (Emp emp1 in arr)
+                    {
+                        if (emp1.EName == searchName)
+                        {
+                            Console.WriteLine($"Employee found - Name: {emp1.EName}, Salary: {emp1.Salary}");
+                            found = true;
+                            break;
+                        }
+
+                        if (!found)
+                        {
+                            Console.WriteLine("Employee not found.");
+                        }
+                    }
+
+                }
+                Console.WriteLine("want to continue press 1");
+                result = Convert.ToInt32(Console.ReadLine());
+            }while (result == 1);
+
+        }
+                 
+    }
+
+                //  ArrayList arr2 = new ArrayList();
+                //arr2.Add(emp1);
+                //arr2.Add(emp2);
+                //add records dynamically .. 
+
+
+                //  Console.WriteLine("Enter Id to be searched ..");
+                //write code - to find and display employee 
+    public class Emp
+
+    {
+        private int _Sal;
+        private string _EName;
+
+        public string EName
+        {
+            get { return _EName; }
+            set { _EName = value; }
+        }
+
+
+        public int Salary
+        {
+            get { return _Sal; }
+            set { _Sal = value; }
+        }
+        public string GetempDetails()
+        {
+            string str = "Ename " + _EName + "Salary " + _Sal;
+            return str;
+        }
+
+    }
+}
