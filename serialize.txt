@@ -1,116 +1,83 @@
-using System.Threading.Channels;
-using System.Xml.Serialization;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 
-namespace serialize
+namespace Deserialize1
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            string filePath1 = @"C:\Users\IET\Desktop\.net\serialize.xml";
+            string filepath = @"C:\Users\IET\Desktop\.net\deserial.txt";
             FileStream fs = null;
-            if (File.Exists(filePath1))
+            if (File.Exists(filepath))
             {
-                fs = new FileStream(filePath1, FileMode.Append, FileAccess.Write);
+                fs = new FileStream(filepath, FileMode.Open, FileAccess.Read);
             }
             else
             {
-                fs = new FileStream(filePath1, FileMode.CreateNew, FileAccess.Write);
+                fs = new FileStream(filepath, FileMode.Open, FileAccess.ReadWrite);
             }
-            Customer customer = new Customer();
-            Console.WriteLine("Enter ID :");
-            customer.Id = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Enter name ");
-            customer.CName = Console.ReadLine();
-            Console.WriteLine("Enter address");
-            customer.CAddress = Console.ReadLine();
+            Myclass myclass = new Myclass();
+             Myclass myclass1 = new Myclass();
+           
 
+            #region serialization
+            /*  Console.WriteLine("Enter Employee ID ");
+                  myclass.id = Convert.ToInt32(Console.ReadLine());
+                   Console.WriteLine("Enter Employee name ");
+                   myclass.Name = Console.ReadLine();
+              Console.WriteLine("Enter Employee ID ");
+              myclass1.id = Convert.ToInt32(Console.ReadLine());
+              Console.WriteLine("Enter Employee name ");
+              myclass1.Name = Console.ReadLine();
 
-            Emp emp = new Emp();
-            Console.WriteLine("enter Name");
-            emp.EName = Console.ReadLine();
-            Console.WriteLine("enter salary");
-            emp.Salary= Convert.ToInt32(Console.ReadLine());
-            
-
-
-            Type type = customer.GetType();
-            XmlSerializer xmlSerializer = new XmlSerializer(type);
-            XmlSerializer xmlSerializer1 = new XmlSerializer(typeof(Customer));
-            xmlSerializer.Serialize(fs, customer);
-
-            Type type2 = emp.GetType();
-            XmlSerializer xmlSerializer2 = new XmlSerializer(type2);
-            XmlSerializer xmlSerializer3 = new XmlSerializer(typeof(Emp));
-            xmlSerializer2.Serialize(fs, emp);
-
-            fs.Close();
-            Console.WriteLine("Done");
+              BinaryFormatter bf = new BinaryFormatter();
+               bf.Serialize(fs, myclass);
+               bf.Serialize(fs, myclass1);
+               fs.Close();*/
+            #endregion
+            #region Deserialization
+            BinaryFormatter bf = new BinaryFormatter();
+            myclass = bf.Deserialize(fs) as Myclass;
+            myclass1 = bf.Deserialize(fs) as Myclass;
+            Console.WriteLine(myclass.GetDetails());
+            Console.WriteLine(myclass1.GetDetails());
+            Console.WriteLine("done");
+            Console.ReadLine(); 
+            #endregion
 
         }
     }
-        [Serializable]
-        public class Customer
-        {
-            private int _CId;
-            private string _CName;
-            private string _CAddress;
-
-            // [NonSerialized]
-            private string _Password = "123456";
-
-            public string Password
-            {
-                get { return _Password = "123456"; }
-                set { _Password = value; }
-            }
-
-
-            public string CAddress
-            {
-                get { return _CAddress; }
-                set { _CAddress = value; }
-            }
-
-            public string CName
-            {
-                get { return _CName; }
-                set { _CName = value; }
-            }
-
-
-            public int Id
-            {
-                get { return _CId; }
-                set { _CId = value; }
-            }
-            public string GetCustomerDetails()
-            {
-                string str = "CID " + _CId + "CName " + _CName + " CAddress " + _CAddress + " PAssword " + _Password;
-                return str;
-            }
-        }
-
     [Serializable]
-    public class Emp
+    public class Myclass
     {
-        private int _Sal;
-        private string _EName;
+        private int _id;
+        private string _Name;
 
-        public string EName
+        public string Name
         {
-            get { return _EName; }
-            set { _EName = value; }
+            get { return _Name; }
+            set { _Name = value; }
         }
 
 
-        public int Salary
+        public int id
         {
-            get { return _Sal; }
-            set { _Sal = value; }
+            get { return _id; }
+            set { _id = value; }
         }
-
-
+        public string GetDetails()
+        {
+            return string.Format("Id ={0}, Name ={1}", _id, _Name);
+        }
     }
 }
-    
+
